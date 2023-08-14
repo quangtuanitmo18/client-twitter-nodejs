@@ -51,14 +51,14 @@ export default function Home() {
       <h2>Video Streaming</h2>
       <video controls width={500}>
         <source
-          src="http://localhost:4000/static/video-stream/e9d61215af15c3f435c3e1800.mp4"
+          src="http://localhost:4000/static/video-stream/3c6d0b9b8bbac29a5f9e42800.mp4"
           type="video/mp4"
         />
       </video>
       <h2>HLS Streaming</h2>
       <MediaPlayer
         title="Sprite Fight"
-        src="http://localhost:4000/static/video-hls/o13vGFsY9Zqdd73XuuDXH/master.m3u8"
+        src="http://localhost:4000/static/video-hls/9d8fac47-8bb4-4c43-b894-d002c8b007f9/master.m3u8"
         // poster='https://image.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/thumbnail.webp?time=268&width=980'
         // thumbnails='https://media-files.vidstack.io/sprite-fight/thumbnails.vtt'
         aspectRatio={16 / 9}
