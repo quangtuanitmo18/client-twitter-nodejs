@@ -58,7 +58,7 @@ export default function Home() {
       <h2>HLS Streaming</h2>
       <MediaPlayer
         title="Sprite Fight"
-        src="http://localhost:4000/static/video-hls/9d8fac47-8bb4-4c43-b894-d002c8b007f9/master.m3u8"
+        src="http://localhost:4000/static/video-hls/f0ba0cc6-b22d-432a-b9c2-e3d37816dd5e/master.m3u8"
         // poster='https://image.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/thumbnail.webp?time=268&width=980'
         // thumbnails='https://media-files.vidstack.io/sprite-fight/thumbnails.vtt'
         aspectRatio={16 / 9}
