@@ -38,6 +38,7 @@ export default function Home() {
     localStorage.removeItem("refresh_token");
     window.location.reload();
   };
+  const host = import.meta.env.VITE_API_URL;
   return (
     <>
       <div>
@@ -52,7 +53,7 @@ export default function Home() {
       <video controls width={500}>
         <source
           // video tren server code
-          src="http://localhost:4000/static/video-stream/3c6d0b9b8bbac29a5f9e42800.mp4"
+          src={`${host}/static/video-stream/3c6d0b9b8bbac29a5f9e42800.mp4`}
           // video tren s3
           // src="http://localhost:4000/static/video-stream/https://nextjs-e-01.s3.ap-southeast-2.amazonaws.com/videos%2F153946e7-a123-4f5d-98c9-9ef75aab664c.mp4.mp4"
           type="video/mp4"
@@ -61,7 +62,7 @@ export default function Home() {
       <h2>HLS Streaming</h2>
       <MediaPlayer
         title="Sprite Fight"
-        src="http://localhost:4000/static/video-hls/0f12bc45-91c9-43e0-8442-0dfed11eb0c8/master.m3u8"
+        src={`${host}/static/video-hls/0f12bc45-91c9-43e0-8442-0dfed11eb0c8/master.m3u8`}
         // src="http://localhost:4000/static/video-hls/90db0081-bb2f-4620-8b11-df9a8f0b5a43/master.m3u8"
         // poster='https://image.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/thumbnail.webp?time=268&width=980'
         // thumbnails='https://media-files.vidstack.io/sprite-fight/thumbnails.vtt'
