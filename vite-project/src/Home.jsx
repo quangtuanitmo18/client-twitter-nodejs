@@ -51,7 +51,10 @@ export default function Home() {
       <h2>Video Streaming</h2>
       <video controls width={500}>
         <source
+          // video tren server code
           src="http://localhost:4000/static/video-stream/3c6d0b9b8bbac29a5f9e42800.mp4"
+          // video tren s3
+          // src="http://localhost:4000/static/video-stream/https://nextjs-e-01.s3.ap-southeast-2.amazonaws.com/videos%2F153946e7-a123-4f5d-98c9-9ef75aab664c.mp4.mp4"
           type="video/mp4"
         />
       </video>
