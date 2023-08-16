@@ -12,6 +12,10 @@ const router = createBrowserRouter([
     path: "/login/oauth",
     element: <Login />,
   },
+  {
+    path: "/email-verifications",
+    element: <VerifyEmail />,
+  },
 ]);
 
 export default router;
