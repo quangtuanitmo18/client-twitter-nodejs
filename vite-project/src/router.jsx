@@ -4,8 +4,8 @@ import Login from "./Login";
 import VerifyForgotPasswordToken from "./VerifyForgotPasswordToken";
 import ResetPassword from "./ResetPassword";
 import VerifyEmail from "./verifyEmail";
-import Home from "./home";
 import Test from "./Test";
+import Home from "./Home";
 
 const router = createBrowserRouter([
   {
