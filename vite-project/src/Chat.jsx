@@ -7,6 +7,10 @@ export default function Chat() {
     socket.on("connect", () => {
       console.log(socket.id);
     });
+    socket.emit("hello", "Tôi là tuan dep trai!");
+    socket.on("hi", (data) => {
+      console.log(data);
+    });
     socket.on("disconnect", () => {
       console.log(socket.id); // undefined
     });
