@@ -54,7 +54,8 @@ export default function Chat() {
     setValue("");
     socket.emit("private message", {
       content: value,
-      to: receiver, // user_id của client 2
+      to: receiver,
+      from: profile._id,
     });
     setMessages((messages) => [
       ...messages,
