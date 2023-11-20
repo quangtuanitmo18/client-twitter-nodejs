@@ -10,10 +10,19 @@ import {
   MediaPlayer,
   MediaPoster,
 } from "@vidstack/react";
+import { useEffect, useRef } from "react";
+import { S3 } from "@aws-sdk/client-s3";
+import { encode } from "./utils/s3";
 
-console.log(import.meta.env);
 const getGoogleAuthUrl = () => {
-  const { VITE_GOOGLE_CLIENT_ID, VITE_GOOGLE_REDIRECT_URI } = import.meta.env;
+  const {
+    VITE_GOOGLE_CLIENT_ID,
+    VITE_GOOGLE_REDIRECT_URI,
+    VITE_AWS_ACCESS_KEY_ID,
+    VITE_AWS_SECRET_ACCESS_KEY,
+    VITE_S3_REGION,
+    VITE_S3_BUCKET,
+  } = import.meta.env;
   const url = `https://accounts.google.com/o/oauth2/v2/auth`;
   const query = {
     client_id: VITE_GOOGLE_CLIENT_ID,
@@ -32,12 +41,48 @@ const getGoogleAuthUrl = () => {
 const googleOAuthUrl = getGoogleAuthUrl();
 
 export default function Home() {
+  const {
+    VITE_AWS_ACCESS_KEY_ID,
+    VITE_AWS_SECRET_ACCESS_KEY,
+    VITE_S3_REGION,
+    VITE_S3_BUCKET,
+  } = import.meta.env;
+  const s3 = new S3({
+    region: VITE_S3_REGION,
+    credentials: {
+      secretAccessKey: VITE_AWS_SECRET_ACCESS_KEY,
+      accessKeyId: VITE_AWS_ACCESS_KEY_ID,
+    },
+  });
   const isAuthenticated = Boolean(localStorage.getItem("access_token"));
   const logout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     window.location.reload();
   };
+
+  // useEffect(() => {
+  //   let imageTest = document.getElementById("image-test");
+  //   s3.getObject(
+  //     {
+  //       Bucket: VITE_S3_BUCKET,
+  //       Key: "images/087e647131cd0be55dde49e00.jpg",
+  //     },
+  //     function (errtxt, file) {
+  //       if (errtxt) {
+  //         console.Log("lireFic", "ERR " + errtxt);
+  //       } else {
+  //         console.log("lecture OK");
+  //         console.log(imageTest);
+
+  //         imageTest.src = "data:image/jpeg;base64," + encode(file.Body);
+
+  //         console.log("data:image/jpeg;base64," + encode(file.Body));
+  //       }
+  //     }
+  //   );
+  // }, []);
+
   const host = import.meta.env.VITE_API_URL;
   return (
     <>
@@ -53,13 +98,14 @@ export default function Home() {
       <video controls width={500}>
         <source
           // video tren server code
-          src={`${host}/static/video-stream/3c6d0b9b8bbac29a5f9e42800.mp4`}
+          // src={`${host}/static/video-stream/3c6d0b9b8bbac29a5f9e42800.mp4`}
           // video tren s3
-          // src="http://localhost:4000/static/video-stream/https://nextjs-e-01.s3.ap-southeast-2.amazonaws.com/videos%2F153946e7-a123-4f5d-98c9-9ef75aab664c.mp4.mp4"
+          src="https://nextjs-e-01.s3.ap-southeast-2.amazonaws.com/videos%2F3480c22f-789a-4c8e-9606-e0aebeb0ad5e.mp4"
           type="video/mp4"
         />
       </video>
       <h2>HLS Streaming</h2>
+
       <MediaPlayer
         title="Sprite Fight"
         src={`${host}/static/video-hls/0f12bc45-91c9-43e0-8442-0dfed11eb0c8/master.m3u8`}
@@ -87,8 +133,14 @@ export default function Home() {
         </MediaOutlet>
         <MediaCommunitySkin />
       </MediaPlayer>
-
-      <h1>Google OAuth 2.0</h1>
+      <h2>Imagemage</h2>
+      <img
+        src={`${host}/static/xem-image/087e647131cd0be55dde49e00.jpg`}
+        alt=""
+        id="image-test"
+        // ref={ref}
+      />
+      <h1>Google oAuth 2.0</h1>
       <p className="read-the-docs">
         {isAuthenticated ? (
           <>
