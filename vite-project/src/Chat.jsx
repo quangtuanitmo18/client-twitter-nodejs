@@ -36,16 +36,15 @@ export default function Chat() {
       });
   };
   useEffect(() => {
-    socket.auth = {
-      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-    };
-    socket.connect();
     socket.on("receive_message", (data) => {
       const { payload } = data;
       setConversations((conversations) => [payload, ...conversations]);
     });
     socket.on("connect_error", (err) => {
       console.log(err.data);
+    });
+    socket.on("disconnect", (reason) => {
+      console.log(reason);
     });
     return () => {
       socket.disconnect();
