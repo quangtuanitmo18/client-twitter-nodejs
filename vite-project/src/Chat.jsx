@@ -65,6 +65,7 @@ export default function Chat() {
       },
     ]);
   };
+  console.log(messages);
   return (
     <div>
       <h1>Chat</h1>
