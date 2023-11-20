@@ -1,30 +1,30 @@
-import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
 import socket from "./socket";
-const profile = JSON.parse(localStorage.getItem("profile"));
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
+
+const profile = JSON.parse(localStorage.getItem("profile"));
+const usernames = [
+  {
+    name: "user1",
+    value: "user64b5dbd9f91944aea8604e17",
+  },
+  {
+    name: "user2",
+    value: "user64b283e8157e8e3f2b07860d",
+  },
+];
+
 const LIMIT = 10;
 const PAGE = 1;
 export default function Chat() {
   const [value, setValue] = useState("");
   const [conversations, setConversations] = useState([]);
+  const [receiver, setReceiver] = useState("");
   const [pagination, setPagination] = useState({
     page: PAGE,
     total_page: 0,
   });
-  const usernames = [
-    {
-      name: "user1",
-      value: "user64b5dbd9f91944aea8604e17",
-    },
-    {
-      name: "user2",
-      value: "user64b283e8157e8e3f2b07860d",
-    },
-  ];
-
-  const [receiver, setReceiver] = useState("");
   const getProfile = (username) => {
     axios
       .get(`/users/${username}`, {
@@ -37,12 +37,15 @@ export default function Chat() {
   };
   useEffect(() => {
     socket.auth = {
-      _id: profile._id,
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     };
     socket.connect();
     socket.on("receive_message", (data) => {
       const { payload } = data;
-      setConversations((conversations) => [...conversations, payload]);
+      setConversations((conversations) => [payload, ...conversations]);
+    });
+    socket.on("connect_error", (err) => {
+      console.log(err.data);
     });
     return () => {
       socket.disconnect();
@@ -72,6 +75,7 @@ export default function Chat() {
         });
     }
   }, [receiver]);
+
   const fetchMoreConversations = () => {
     console.log(pagination);
     if (receiver && pagination.page < pagination.total_page) {
@@ -96,10 +100,10 @@ export default function Chat() {
         });
     }
   };
-  const Send = (e) => {
+
+  const send = (e) => {
     e.preventDefault();
     setValue("");
-
     const conversation = {
       content: value,
       sender_id: profile._id,
@@ -108,16 +112,15 @@ export default function Chat() {
     socket.emit("send_message", {
       payload: conversation,
     });
-
     setConversations((conversations) => [
       {
         ...conversation,
-        _id: new Date().getTime(),
+        _id: Math.random().toString(36).substr(2, 9),
       },
       ...conversations,
     ]);
   };
-  console.log(conversations);
+
   return (
     <div>
       <h1>Chat</h1>
@@ -130,7 +133,6 @@ export default function Chat() {
           </div>
         ))}
       </div>
-
       <div
         id="scrollableDiv"
         style={{
@@ -169,7 +171,7 @@ export default function Chat() {
         </InfiniteScroll>
       </div>
 
-      <form onSubmit={Send}>
+      <form onSubmit={send}>
         <input
           type="text"
           onChange={(e) => setValue(e.target.value)}
